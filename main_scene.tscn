@@ -1,0 +1,145 @@
+[gd_scene load_steps=15 format=3 uid="uid://g2fmmu80fl1r"]
+
+[ext_resource type="PackedScene" uid="uid://ura8qxo2t8qn" path="res://player.tscn" id="1_buhnv"]
+[ext_resource type="Texture2D" uid="uid://darouo2cix4ka" path="res://heart.png" id="1_hdepo"]
+[ext_resource type="Script" path="res://Main.cs" id="1_pmf3k"]
+[ext_resource type="PackedScene" uid="uid://ciqnlswopxiv1" path="res://power_up.tscn" id="2_nlpue"]
+[ext_resource type="PackedScene" uid="uid://4kdanr4hlq7s" path="res://regular_ball.tscn" id="2_orh7a"]
+[ext_resource type="PackedScene" uid="uid://cbbj8th1yehax" path="res://stage.tscn" id="3_xxouu"]
+[ext_resource type="Script" path="res://Camera.cs" id="5_wtd17"]
+[ext_resource type="Texture2D" uid="uid://cwqmbwfeta2re" path="res://smashit.png" id="6_btlwj"]
+[ext_resource type="Texture2D" uid="uid://basdmrggkamy8" path="res://misc/dot_with_background.png" id="8_r1xp6"]
+[ext_resource type="Texture2D" uid="uid://don48hwcge1r1" path="res://misc/r_with_background.png" id="9_l4v0x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfkj3"]
+atlas = ExtResource("6_btlwj")
+region = Rect2(0, 0, 912, 784)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0pdje"]
+atlas = ExtResource("6_btlwj")
+region = Rect2(912, 0, 912, 784)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8a1s"]
+atlas = ExtResource("6_btlwj")
+region = Rect2(1824, 0, 912, 784)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7ivts"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfkj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0pdje")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b8a1s")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="MainScene" type="Node2D"]
+script = ExtResource("1_pmf3k")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.411765, 0.313726, 0.443137, 1)
+
+[node name="HUD" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="HUD"]
+position = Vector2(157, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D2" type="Sprite2D" parent="HUD"]
+position = Vector2(221, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D3" type="Sprite2D" parent="HUD"]
+position = Vector2(292, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D4" type="Sprite2D" parent="HUD"]
+position = Vector2(356, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D5" type="Sprite2D" parent="HUD"]
+position = Vector2(423, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D6" type="Sprite2D" parent="HUD"]
+position = Vector2(720.66, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D7" type="Sprite2D" parent="HUD"]
+position = Vector2(784.66, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D8" type="Sprite2D" parent="HUD"]
+position = Vector2(855.66, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D9" type="Sprite2D" parent="HUD"]
+position = Vector2(919.66, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Sprite2D10" type="Sprite2D" parent="HUD"]
+position = Vector2(986.66, 52)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("1_hdepo")
+
+[node name="Stage" parent="." instance=ExtResource("3_xxouu")]
+position = Vector2(0, 31)
+
+[node name="Powerup" parent="." instance=ExtResource("2_nlpue")]
+position = Vector2(384, 200)
+
+[node name="P1" parent="." instance=ExtResource("1_buhnv")]
+position = Vector2(292, 296)
+scale = Vector2(-0.2, 0.2)
+
+[node name="P2" parent="." instance=ExtResource("1_buhnv")]
+position = Vector2(846, 304)
+playerPrefix = "P2"
+
+[node name="RegularBall" parent="." instance=ExtResource("2_orh7a")]
+position = Vector2(572, 321)
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(579, 328)
+zoom = Vector2(0.5, 0.5)
+script = ExtResource("5_wtd17")
+
+[node name="Instructions" type="Node2D" parent="."]
+
+[node name="SmashInstructions" type="AnimatedSprite2D" parent="Instructions"]
+position = Vector2(563, 464)
+scale = Vector2(0.33, 0.33)
+sprite_frames = SubResource("SpriteFrames_7ivts")
+frame_progress = 0.941787
+
+[node name="DotWithBackground" type="Sprite2D" parent="Instructions"]
+position = Vector2(1108, 388)
+texture = ExtResource("8_r1xp6")
+
+[node name="RWithBackground" type="Sprite2D" parent="Instructions"]
+position = Vector2(69, 406)
+texture = ExtResource("9_l4v0x")

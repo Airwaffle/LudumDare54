@@ -1,0 +1,112 @@
+[gd_scene load_steps=17 format=3 uid="uid://ura8qxo2t8qn"]
+
+[ext_resource type="Script" path="res://Player.cs" id="1_vnnkx"]
+[ext_resource type="Texture2D" uid="uid://cf6p14jpg4t34" path="res://player.png" id="2_0dvw1"]
+[ext_resource type="Texture2D" uid="uid://cat4ypoaie76o" path="res://playerShadow.png" id="2_s2g0w"]
+[ext_resource type="Texture2D" uid="uid://c5lt0c1c4jqvy" path="res://faces/concentrated.png" id="3_1ehkc"]
+[ext_resource type="Texture2D" uid="uid://dwou4vssggvp" path="res://faces/normal.png" id="4_0ccn7"]
+[ext_resource type="Texture2D" uid="uid://btxjriva7rktr" path="res://faces/hurt.png" id="4_gesvu"]
+[ext_resource type="Texture2D" uid="uid://bsjut02chepcn" path="res://hands.png" id="4_y0ux4"]
+[ext_resource type="Texture2D" uid="uid://diip6wtxh1kkq" path="res://faces/power.png" id="5_k4wgk"]
+[ext_resource type="Texture2D" uid="uid://dxein81fuimm3" path="res://powerups/underneath.png" id="6_n1k56"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0p6u"]
+atlas = ExtResource("6_n1k56")
+region = Rect2(0, 0, 803, 552)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nuh20"]
+atlas = ExtResource("6_n1k56")
+region = Rect2(803, 0, 803, 552)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_date3"]
+atlas = ExtResource("6_n1k56")
+region = Rect2(1606, 0, 803, 552)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ipqw5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0p6u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nuh20")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_date3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8vfkk"]
+size = Vector2(28.3552, 24.8516)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_385s4"]
+size = Vector2(16.5424, 26.1285)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aac44"]
+size = Vector2(123.158, 35)
+
+[node name="Player" type="Node2D"]
+scale = Vector2(0.2, 0.2)
+script = ExtResource("1_vnnkx")
+FaceNormal = ExtResource("4_0ccn7")
+FaceConcentrated = ExtResource("3_1ehkc")
+FaceHurt = ExtResource("4_gesvu")
+FacePower = ExtResource("5_k4wgk")
+
+[node name="PowerupIndicator" type="AnimatedSprite2D" parent="."]
+position = Vector2(20, 120)
+scale = Vector2(1, 1)
+sprite_frames = SubResource("SpriteFrames_ipqw5")
+frame_progress = 0.891131
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.32549)
+position = Vector2(0, 219)
+texture = ExtResource("2_s2g0w")
+
+[node name="PlayerGraphic" type="Node2D" parent="."]
+
+[node name="Body" type="Sprite2D" parent="PlayerGraphic"]
+scale = Vector2(1, 1)
+texture = ExtResource("2_0dvw1")
+
+[node name="HurtArea" type="Area2D" parent="PlayerGraphic/Body"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGraphic/Body/HurtArea"]
+position = Vector2(40, 60)
+scale = Vector2(7.22972, 7.24301)
+shape = SubResource("RectangleShape2D_8vfkk")
+debug_color = Color(0.933333, 0, 0, 0.419608)
+
+[node name="Face" type="Node2D" parent="PlayerGraphic"]
+scale = Vector2(1, 1)
+
+[node name="FaceSprite" type="Sprite2D" parent="PlayerGraphic/Face"]
+texture = ExtResource("4_0ccn7")
+
+[node name="Hands" type="Node2D" parent="PlayerGraphic"]
+position = Vector2(-175, 55)
+
+[node name="Hands" type="Sprite2D" parent="PlayerGraphic/Hands"]
+scale = Vector2(1, 1)
+texture = ExtResource("4_y0ux4")
+
+[node name="HandArea" type="Area2D" parent="PlayerGraphic/Hands"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGraphic/Hands/HandArea"]
+position = Vector2(-102.5, -7.5)
+scale = Vector2(19.6464, 12.0558)
+shape = SubResource("RectangleShape2D_385s4")
+
+[node name="FeetArea" type="Area2D" parent="."]
+position = Vector2(-20, 215)
+scale = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FeetArea"]
+position = Vector2(35, -15)
+scale = Vector2(0.974359, -1.625)
+shape = SubResource("RectangleShape2D_aac44")
+debug_color = Color(0.309804, 0.623529, 0.215686, 0.419608)
