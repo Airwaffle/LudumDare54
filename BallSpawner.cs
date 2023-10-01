@@ -6,14 +6,10 @@ using System.Linq;
 public partial class BallSpawner : Node2D
 {
 	private ulong[] timeBetweenBallsMs = new[] {
-		(ulong)(30 * 1000),
-		(ulong)(25 * 1000),
-		(ulong)(20 * 1000),
+		(ulong)(10 * 1000),
 		(ulong)(20 * 1000),
 		(ulong)(15 * 1000),
 		(ulong)(15 * 1000),
-		(ulong)(10 * 1000),
-		(ulong)(10 * 1000),
 		(ulong)(10 * 1000),
 		(ulong)(10 * 1000),
 		(ulong)(5 * 1000),
