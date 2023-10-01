@@ -16,8 +16,6 @@ public partial class Powerup : Node2D
 		random = new RandomNumberGenerator();
 		powerupType = (PowerupType)random.RandiRange(1, Enum.GetValues(typeof(PowerupType)).Length - 1);
 		graphic = GetNode<Sprite2D>("Graphic");
-
-		powerupType = PowerupType.Homing;
 		graphic.Modulate = PowerupData.GetColor(powerupType);
 	}
 
