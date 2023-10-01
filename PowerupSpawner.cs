@@ -14,11 +14,14 @@ public partial class PowerupSpawner : Node2D
 
 	private int lastTimeSmashes = 0;
 	private Player player;
-    private PackedScene powerupScene;
-    private List<Powerup> existingPowerups = new List<Powerup>();
+	private PackedScene powerupScene;
+	private List<Powerup> existingPowerups = new List<Powerup>();
+	private RandomNumberGenerator random;
+	private PowerupType lastSpawned = PowerupType.None;
 
 	public override void _Ready()
 	{
+		random = new RandomNumberGenerator();
 		player = GetNode<Player>($"/root/MainScene/{playerPrefix}");
 		powerupScene = (PackedScene)ResourceLoader.Load("res://power_up.tscn");
 	}
@@ -46,10 +49,17 @@ public partial class PowerupSpawner : Node2D
 
 		var powerup = (Powerup)powerupScene.Instantiate();
 		AddChild(powerup);
+
+
+		var powerupType = PowerupType.None;
+		while (powerupType == PowerupType.None || powerupType == lastSpawned) 
+			powerupType = (PowerupType)random.RandiRange(1, Enum.GetValues(typeof(PowerupType)).Length - 1);
 		
 		existingPowerups.Add(powerup);
-		powerup.SetSpawner(this);
+		powerup.SetSpawner(this, powerupType);
 		powerup.GlobalPosition = slot.Value;
+
+		lastSpawned = powerupType;
 	}
 
 	private Vector2? GetPowerupPosition()
