@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cbbj8th1yehax"]
+[gd_scene load_steps=18 format=3 uid="uid://cbbj8th1yehax"]
 
 [ext_resource type="Texture2D" uid="uid://d4be0hf3awe4c" path="res://playerAreacColor.png" id="1_kj76b"]
 [ext_resource type="Texture2D" uid="uid://pdreh44p27ev" path="res://playerArea2.png" id="1_t52tk"]
@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://cwxd1f2ttmkx6" path="res://misc/arrows.png" id="5_cdgwn"]
 [ext_resource type="Texture2D" uid="uid://cmpm48ovnfsw7" path="res://misc/r.png" id="6_m3ydi"]
 [ext_resource type="Texture2D" uid="uid://bj2hv4dnuw6e7" path="res://misc/comma.png" id="7_53xix"]
+[ext_resource type="Script" path="res://PowerupSpawner.cs" id="10_qq081"]
+[ext_resource type="PackedScene" uid="uid://ca4dbxhsdq04m" path="res://ball_spawner.tscn" id="11_os1xl"]
+[ext_resource type="Script" path="res://BallSpawner.cs" id="12_5hv0q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mfq0q"]
 size = Vector2(413, 469)
@@ -17,7 +20,13 @@ size = Vector2(413, 469)
 size = Vector2(419.88, 470)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tqyek"]
-size = Vector2(899, 432)
+size = Vector2(1270, 432)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x7w4b"]
+size = Vector2(316, 657)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yg2hj"]
+size = Vector2(717, 727)
 
 [node name="Stage" type="Node2D"]
 
@@ -60,12 +69,26 @@ position = Vector2(806.63, 106.25)
 position = Vector2(35.0599, 217)
 shape = SubResource("RectangleShape2D_1au34")
 
-[node name="BallArea" type="Area2D" parent="."]
-position = Vector2(30, 35)
+[node name="BallYArea" type="Area2D" parent="."]
+position = Vector2(13, -411)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BallArea"]
-position = Vector2(533.5, 283)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallYArea"]
+position = Vector2(540, 293)
 shape = SubResource("RectangleShape2D_tqyek")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BallYArea"]
+position = Vector2(539, 1178)
+shape = SubResource("RectangleShape2D_tqyek")
+
+[node name="BallXArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallXArea"]
+position = Vector2(-53, 318.5)
+shape = SubResource("RectangleShape2D_x7w4b")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="BallXArea"]
+position = Vector2(1384, 329)
+shape = SubResource("RectangleShape2D_yg2hj")
 
 [node name="Net" type="Sprite2D" parent="."]
 visible = false
@@ -75,37 +98,26 @@ texture = ExtResource("2_paldf")
 
 [node name="misc" type="Node2D" parent="."]
 
-[node name="Dot" type="Sprite2D" parent="misc"]
+[node name="Player2" type="Node2D" parent="misc"]
+position = Vector2(273, 96)
+scale = Vector2(0.75, 0.75)
+
+[node name="Dot" type="Sprite2D" parent="misc/Player2"]
 position = Vector2(1133.75, 360.065)
 scale = Vector2(0.33, 0.33)
 texture = ExtResource("4_vghwb")
 
-[node name="Dot2" type="Sprite2D" parent="misc"]
+[node name="Dot2" type="Sprite2D" parent="misc/Player2"]
 position = Vector2(1127.75, 316.065)
 scale = Vector2(0.33, 0.33)
 texture = ExtResource("7_53xix")
 
-[node name="Dot3" type="Sprite2D" parent="misc"]
-position = Vector2(82, 341)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("5_b15qs")
-
-[node name="Dot4" type="Sprite2D" parent="misc"]
-position = Vector2(88.14, 383.125)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("6_m3ydi")
-
-[node name="Sprite2D" type="Sprite2D" parent="misc"]
-position = Vector2(66.14, 284.125)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("4_4kg5m")
-
-[node name="Sprite2D2" type="Sprite2D" parent="misc"]
+[node name="Sprite2D2" type="Sprite2D" parent="misc/Player2"]
 position = Vector2(1104.75, 274.065)
 scale = Vector2(0.33, 0.33)
 texture = ExtResource("5_cdgwn")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="misc"]
+[node name="RichTextLabel" type="RichTextLabel" parent="misc/Player2"]
 modulate = Color(0, 0, 0, 1)
 offset_left = 1059.75
 offset_top = 310.065
@@ -113,7 +125,7 @@ offset_right = 1159.75
 offset_bottom = 410.065
 text = "Jump:"
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="misc"]
+[node name="RichTextLabel2" type="RichTextLabel" parent="misc/Player2"]
 modulate = Color(0, 0, 0, 1)
 offset_left = 1056.75
 offset_top = 349.065
@@ -121,7 +133,26 @@ offset_right = 1156.75
 offset_bottom = 449.065
 text = "Smash:"
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="misc"]
+[node name="Player1" type="Node2D" parent="misc"]
+position = Vector2(1, 70)
+scale = Vector2(0.75, 0.75)
+
+[node name="Dot3" type="Sprite2D" parent="misc/Player1"]
+position = Vector2(82, 341)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("5_b15qs")
+
+[node name="Dot4" type="Sprite2D" parent="misc/Player1"]
+position = Vector2(84.8067, 376.955)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("6_m3ydi")
+
+[node name="Sprite2D" type="Sprite2D" parent="misc/Player1"]
+position = Vector2(66.14, 284.125)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("4_4kg5m")
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="misc/Player1"]
 modulate = Color(0, 0, 0, 1)
 offset_left = 13.0
 offset_top = 333.0
@@ -129,10 +160,47 @@ offset_right = 113.0
 offset_bottom = 433.0
 text = "Jump:"
 
-[node name="RichTextLabel4" type="RichTextLabel" parent="misc"]
+[node name="RichTextLabel4" type="RichTextLabel" parent="misc/Player1"]
 modulate = Color(0, 0, 0, 1)
-offset_left = 10.0
-offset_top = 372.0
-offset_right = 110.0
-offset_bottom = 472.0
+offset_left = 6.66667
+offset_top = 365.83
+offset_right = 106.667
+offset_bottom = 465.83
 text = "Smash:"
+
+[node name="PowerupSpawner" type="Node2D" parent="." node_paths=PackedStringArray("spawnPoints")]
+script = ExtResource("10_qq081")
+playerPrefix = "P1"
+spawnPoints = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
+
+[node name="SpawnPoint1" type="Node2D" parent="PowerupSpawner"]
+position = Vector2(292, 167)
+
+[node name="SpawnPoint2" type="Node2D" parent="PowerupSpawner"]
+position = Vector2(287, 469)
+
+[node name="PowerupSpawner2" type="Node2D" parent="." node_paths=PackedStringArray("spawnPoints")]
+position = Vector2(554, 0)
+script = ExtResource("10_qq081")
+playerPrefix = "P2"
+spawnPoints = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
+
+[node name="SpawnPoint1" type="Node2D" parent="PowerupSpawner2"]
+position = Vector2(292, 167)
+
+[node name="SpawnPoint2" type="Node2D" parent="PowerupSpawner2"]
+position = Vector2(287, 469)
+
+[node name="BallSpawner" parent="." node_paths=PackedStringArray("spawnPoints") instance=ExtResource("11_os1xl")]
+position = Vector2(563, 59)
+script = ExtResource("12_5hv0q")
+spawnPoints = [NodePath("Node2D"), NodePath("Node2D3"), NodePath("Node2D2")]
+
+[node name="Node2D" type="Node2D" parent="BallSpawner"]
+position = Vector2(3, 270)
+
+[node name="Node2D2" type="Node2D" parent="BallSpawner"]
+position = Vector2(3, 150)
+
+[node name="Node2D3" type="Node2D" parent="BallSpawner"]
+position = Vector2(3, 391)

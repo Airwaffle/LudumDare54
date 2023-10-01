@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://duftf1jmkq60e"]
+
+[ext_resource type="Script" path="res://PlayerToggle.cs" id="1_6ea2t"]
+[ext_resource type="Texture2D" uid="uid://b0l11ga4xfvdl" path="res://on.png" id="2_c7bkd"]
+[ext_resource type="Texture2D" uid="uid://b0vjp0frb528g" path="res://off.png" id="3_qwcj6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cr5q6"]
+size = Vector2(246, 134)
+
+[node name="PlayerToggle" type="Node2D"]
+script = ExtResource("1_6ea2t")
+
+[node name="GraphicOn" type="Sprite2D" parent="."]
+texture = ExtResource("2_c7bkd")
+
+[node name="GraphicOff" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_qwcj6")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-8, -4)
+shape = SubResource("RectangleShape2D_cr5q6")
+
+[node name="Text" type="RichTextLabel" parent="."]
+modulate = Color(0, 0, 0, 1)
+offset_left = -108.0
+offset_top = -137.0
+offset_right = 292.0
+offset_bottom = -37.0
+scale = Vector2(3, 3)
+text = "HUMAN"
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

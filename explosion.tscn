@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://s7fviovkvy3b"]
+
+[ext_resource type="Script" path="res://Explosion.cs" id="1_t6n40"]
+[ext_resource type="Texture2D" uid="uid://ccdi2u7dj2qgj" path="res://explosion.png" id="2_3of4s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjjy4"]
+atlas = ExtResource("2_3of4s")
+region = Rect2(0, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_15sj2"]
+atlas = ExtResource("2_3of4s")
+region = Rect2(700, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0wiu"]
+atlas = ExtResource("2_3of4s")
+region = Rect2(1400, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dk0yn"]
+atlas = ExtResource("2_3of4s")
+region = Rect2(2100, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64vht"]
+atlas = ExtResource("2_3of4s")
+region = Rect2(2800, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdkht"]
+atlas = ExtResource("2_3of4s")
+region = Rect2(3500, 0, 700, 700)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rcjf3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pjjy4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_15sj2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0wiu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dk0yn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64vht")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hdkht")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f5uer"]
+radius = 400.011
+
+[node name="Explosion" type="Node2D"]
+scale = Vector2(0.33, 0.33)
+script = ExtResource("1_t6n40")
+metadata/_edit_vertical_guides_ = []
+
+[node name="Animation" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rcjf3")
+frame = 2
+frame_progress = 0.536116
+
+[node name="BombArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BombArea"]
+shape = SubResource("CircleShape2D_f5uer")
+
+[connection signal="animation_finished" from="Animation" to="." method="_on_animation_animation_finished"]
+[connection signal="animation_looped" from="Animation" to="." method="_on_animation_animation_finished"]

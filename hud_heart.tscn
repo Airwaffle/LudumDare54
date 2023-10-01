@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://dlj0t0nu1bdm5"]
+
+[ext_resource type="Script" path="res://HUDHeart.cs" id="1_kxjrc"]
+[ext_resource type="Texture2D" uid="uid://darouo2cix4ka" path="res://heart.png" id="2_65esh"]
+[ext_resource type="Script" path="res://MoveUpAndDown.cs" id="3_4vvbg"]
+[ext_resource type="Texture2D" uid="uid://bb6eownm2u7i7" path="res://heartPop.png" id="3_smok6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6gr75"]
+atlas = ExtResource("3_smok6")
+region = Rect2(0, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0gyj"]
+atlas = ExtResource("3_smok6")
+region = Rect2(300, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecgpn"]
+atlas = ExtResource("3_smok6")
+region = Rect2(600, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o544a"]
+atlas = ExtResource("3_smok6")
+region = Rect2(900, 0, 300, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_05sgb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6gr75")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0gyj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecgpn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o544a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="HUD_Heart" type="Node2D"]
+script = ExtResource("1_kxjrc")
+
+[node name="Normal" type="Sprite2D" parent="."]
+texture = ExtResource("2_65esh")
+script = ExtResource("3_4vvbg")
+intentsity = 6.0
+length = 8.0
+
+[node name="Background" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 0.290196)
+texture = ExtResource("2_65esh")
+
+[node name="Pop" type="AnimatedSprite2D" parent="."]
+visible = false
+sprite_frames = SubResource("SpriteFrames_05sgb")
+frame_progress = 0.0282123

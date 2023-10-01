@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ura8qxo2t8qn"]
+[gd_scene load_steps=20 format=3 uid="uid://ura8qxo2t8qn"]
 
 [ext_resource type="Script" path="res://Player.cs" id="1_vnnkx"]
 [ext_resource type="Texture2D" uid="uid://cf6p14jpg4t34" path="res://player.png" id="2_0dvw1"]
@@ -8,7 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://btxjriva7rktr" path="res://faces/hurt.png" id="4_gesvu"]
 [ext_resource type="Texture2D" uid="uid://bsjut02chepcn" path="res://hands.png" id="4_y0ux4"]
 [ext_resource type="Texture2D" uid="uid://diip6wtxh1kkq" path="res://faces/power.png" id="5_k4wgk"]
+[ext_resource type="Texture2D" uid="uid://cd0fbimk6gtri" path="res://faces/miss.png" id="6_l6rl8"]
 [ext_resource type="Texture2D" uid="uid://dxein81fuimm3" path="res://powerups/underneath.png" id="6_n1k56"]
+[ext_resource type="Texture2D" uid="uid://bju6v2mm4csdl" path="res://playerAI.png" id="8_t88yj"]
+[ext_resource type="Texture2D" uid="uid://dm8hdc3t1su7l" path="res://aiLamp.png" id="11_6t2ps"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m0p6u"]
 atlas = ExtResource("6_n1k56")
@@ -55,10 +58,12 @@ FaceNormal = ExtResource("4_0ccn7")
 FaceConcentrated = ExtResource("3_1ehkc")
 FaceHurt = ExtResource("4_gesvu")
 FacePower = ExtResource("5_k4wgk")
+FaceMiss = ExtResource("6_l6rl8")
+BodyHuman = ExtResource("2_0dvw1")
+BodyAI = ExtResource("8_t88yj")
 
 [node name="PowerupIndicator" type="AnimatedSprite2D" parent="."]
 position = Vector2(20, 120)
-scale = Vector2(1, 1)
 sprite_frames = SubResource("SpriteFrames_ipqw5")
 frame_progress = 0.891131
 
@@ -69,9 +74,14 @@ texture = ExtResource("2_s2g0w")
 
 [node name="PlayerGraphic" type="Node2D" parent="."]
 
-[node name="Body" type="Sprite2D" parent="PlayerGraphic"]
+[node name="AILamp" type="Sprite2D" parent="PlayerGraphic"]
+visible = false
+position = Vector2(60, -230)
 scale = Vector2(1, 1)
-texture = ExtResource("2_0dvw1")
+texture = ExtResource("11_6t2ps")
+
+[node name="Body" type="Sprite2D" parent="PlayerGraphic"]
+texture = ExtResource("8_t88yj")
 
 [node name="HurtArea" type="Area2D" parent="PlayerGraphic/Body"]
 
@@ -82,7 +92,6 @@ shape = SubResource("RectangleShape2D_8vfkk")
 debug_color = Color(0.933333, 0, 0, 0.419608)
 
 [node name="Face" type="Node2D" parent="PlayerGraphic"]
-scale = Vector2(1, 1)
 
 [node name="FaceSprite" type="Sprite2D" parent="PlayerGraphic/Face"]
 texture = ExtResource("4_0ccn7")
@@ -91,7 +100,6 @@ texture = ExtResource("4_0ccn7")
 position = Vector2(-175, 55)
 
 [node name="Hands" type="Sprite2D" parent="PlayerGraphic/Hands"]
-scale = Vector2(1, 1)
 texture = ExtResource("4_y0ux4")
 
 [node name="HandArea" type="Area2D" parent="PlayerGraphic/Hands"]
@@ -103,7 +111,6 @@ shape = SubResource("RectangleShape2D_385s4")
 
 [node name="FeetArea" type="Area2D" parent="."]
 position = Vector2(-20, 215)
-scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FeetArea"]
 position = Vector2(35, -15)

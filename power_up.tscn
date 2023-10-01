@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ciqnlswopxiv1"]
+[gd_scene load_steps=5 format=3 uid="uid://ciqnlswopxiv1"]
 
 [ext_resource type="Texture2D" uid="uid://d1xxxa4shgsdw" path="res://powerups/powerup.png" id="1_mcxdc"]
 [ext_resource type="Script" path="res://Powerup.cs" id="1_vnupg"]
+[ext_resource type="Script" path="res://MoveUpAndDown.cs" id="3_neu1t"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2ym10"]
 radius = 131.181
@@ -12,10 +13,12 @@ script = ExtResource("1_vnupg")
 
 [node name="Graphic" type="Sprite2D" parent="."]
 texture = ExtResource("1_mcxdc")
+script = ExtResource("3_neu1t")
+intentsity = 5.0
+length = 10.0
 
 [node name="PowerupArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PowerupArea"]
 position = Vector2(-6.06061, 3.0303)
-scale = Vector2(1, 1)
 shape = SubResource("CircleShape2D_2ym10")

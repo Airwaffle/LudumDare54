@@ -1,8 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://4kdanr4hlq7s"]
+[gd_scene load_steps=18 format=3 uid="uid://4kdanr4hlq7s"]
 
 [ext_resource type="Texture2D" uid="uid://cfmh0tt4cqrnk" path="res://ball.png" id="1_4eahd"]
 [ext_resource type="Script" path="res://RegularBall.cs" id="1_vj6qr"]
 [ext_resource type="Texture2D" uid="uid://cat4ypoaie76o" path="res://playerShadow.png" id="2_ahnmp"]
+[ext_resource type="Texture2D" uid="uid://cfn7sxg2vwgq4" path="res://powerups/numbers/1.png" id="2_yn0js"]
+[ext_resource type="Texture2D" uid="uid://pgt5hoa8ayps" path="res://powerups/numbers/2.png" id="3_bswdd"]
+[ext_resource type="Texture2D" uid="uid://cprnjhjjqmhrm" path="res://fireBall.png" id="3_rgag7"]
+[ext_resource type="Texture2D" uid="uid://b2fuvvspkw3fm" path="res://powerups/numbers/3.png" id="4_od8ur"]
+[ext_resource type="Texture2D" uid="uid://36i0154j7qm1" path="res://powerups/numbers/4.png" id="5_uffkl"]
+[ext_resource type="Texture2D" uid="uid://bwxnnlhasky7m" path="res://bombball.png" id="5_vnv60"]
+[ext_resource type="Texture2D" uid="uid://bnsuhcyysnxqu" path="res://powerups/numbers/5.png" id="6_4qdj0"]
+[ext_resource type="Script" path="res://ScaleInAndOut.cs" id="11_lkjcb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttvp1"]
+atlas = ExtResource("3_rgag7")
+region = Rect2(0, 0, 960, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qta82"]
+atlas = ExtResource("3_rgag7")
+region = Rect2(960, 0, 960, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a51ji"]
+atlas = ExtResource("3_rgag7")
+region = Rect2(1920, 0, 960, 600)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_djs4d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttvp1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qta82")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a51ji")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fdhw5"]
 radius = 16.0616
@@ -13,25 +50,54 @@ radius = 57.85
 [node name="RegularBall" type="Node2D"]
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_vj6qr")
+numbers = Array[Texture2D]([ExtResource("2_yn0js"), ExtResource("3_bswdd"), ExtResource("4_od8ur"), ExtResource("5_uffkl"), ExtResource("6_4qdj0")])
 
 [node name="Shadow" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.32549)
 position = Vector2(-10, 175)
 texture = ExtResource("2_ahnmp")
 
-[node name="Graphic" type="Sprite2D" parent="."]
-texture = ExtResource("1_4eahd")
-
-[node name="HitArea" type="Area2D" parent="Graphic"]
+[node name="BallRender" type="Node2D" parent="."]
 scale = Vector2(1, 1)
 
-[node name="HitCollision" type="CollisionShape2D" parent="Graphic/HitArea"]
+[node name="FireAnimation" type="AnimatedSprite2D" parent="BallRender"]
+visible = false
+modulate = Color(1, 0.596078, 1, 1)
+position = Vector2(9.09495e-13, 5)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_djs4d")
+frame_progress = 0.964434
+offset = Vector2(143.333, -43.3333)
+
+[node name="HitArea" type="Area2D" parent="BallRender"]
+scale = Vector2(1, 1)
+
+[node name="HitCollision" type="CollisionShape2D" parent="BallRender/HitArea"]
 scale = Vector2(4.41863, 3.77827)
 shape = SubResource("CircleShape2D_fdhw5")
 debug_color = Color(1, 0.027451, 0, 0.72549)
 
-[node name="SmashArea" type="Area2D" parent="Graphic"]
+[node name="SmashArea" type="Area2D" parent="BallRender"]
+scale = Vector2(1, 1)
 
-[node name="SmashCollision" type="CollisionShape2D" parent="Graphic/SmashArea"]
+[node name="SmashCollision" type="CollisionShape2D" parent="BallRender/SmashArea"]
 scale = Vector2(4.41863, 3.77827)
 shape = SubResource("CircleShape2D_uu6ib")
+
+[node name="Graphic" type="Sprite2D" parent="BallRender"]
+scale = Vector2(1, 1)
+texture = ExtResource("1_4eahd")
+
+[node name="BombGraphic" type="Sprite2D" parent="BallRender"]
+visible = false
+position = Vector2(40, -40)
+scale = Vector2(1, 1)
+texture = ExtResource("5_vnv60")
+
+[node name="BombNumber" type="Sprite2D" parent="BallRender"]
+visible = false
+light_mask = 0
+position = Vector2(0, -10)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_4qdj0")
+script = ExtResource("11_lkjcb")

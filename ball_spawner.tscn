@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://ca4dbxhsdq04m"]
+
+[node name="BallSpawner" type="Node2D"]

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci0o56ydx5gkh"]
+
+[ext_resource type="Texture2D" uid="uid://cad2c7oy2bn60" path="res://crosshair.png" id="1_4n2bk"]
+
+[node name="Crosshair" type="Sprite2D"]
+modulate = Color(1, 1, 1, 0.392157)
+position = Vector2(287, 304)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_4n2bk")

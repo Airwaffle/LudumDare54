@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmed5w2diusui"]
+
+[ext_resource type="Script" path="res://HUD.cs" id="1_cfeih"]
+
+[node name="HUD" type="Node2D"]
+scale = Vector2(0.33, 0.33)
+script = ExtResource("1_cfeih")

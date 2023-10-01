@@ -1,24 +1,20 @@
-Fixa konstig kollision på boll
-spawner för powerups
-spawner för nya bollar
-Preview vad ens powerup är?
-Göra att HP reducas korrekt
-Animera hjärtan som sprängs
-Implementera bombboll
-Implementera homingboll
-Implementera Bigger boll
-Implementera boll med saker roterande runt
 Kunna slå boll bakåt
-ljud och musik 
-squisha ihop sig lite när man landar
-partiklar efter colored ball
-
-Kunna spela ett antal rounds?
-Kunna se hur många gånger de olika har vunnit.
-AI
+less stupid AI
 
 AI:
 - Akta sig för bollar
 - Om powerup, försök navigera dit
 - Om har powerup, försök slå en boll tillbaka
 - Om start, försök slå bollen till spelaren efter "delay"
+
+BONUS
+squisha ihop sig lite när man landar
+Preview vad ens powerup är?
+partiklar efter colored ball
+
+
+Ladda upp kod
+Skriva roliga instruktioner
+Ta screenshot
+Ladda upp build
+Testa gora webbuild

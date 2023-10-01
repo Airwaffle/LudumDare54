@@ -1,5 +1,5 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Powerup : Node2D
 {
@@ -7,21 +7,31 @@ public partial class Powerup : Node2D
 	private RandomNumberGenerator random;
 
 	private Sprite2D graphic;
+	private PowerupSpawner spawner;
 
 	public PowerupType PowerupType => powerupType;
 
 	public override void _Ready()
 	{
 		random = new RandomNumberGenerator();
-		powerupType = (PowerupType)random.RandiRange(1, 3);
+		powerupType = (PowerupType)random.RandiRange(1, Enum.GetValues(typeof(PowerupType)).Length - 1);
 		graphic = GetNode<Sprite2D>("Graphic");
 
+		powerupType = PowerupType.Homing;
 		graphic.Modulate = PowerupData.GetColor(powerupType);
-
 	}
 
-	
-	public override void _Process(double delta)
+
+	public void RemoveSelf()
 	{
+		Visible = false;
+		QueueFree();
+		spawner?.RemovePowerup(this);
 	}
+
+	internal void SetSpawner(PowerupSpawner powerupSpawner)
+	{
+		spawner = powerupSpawner;
+	}
+
 }

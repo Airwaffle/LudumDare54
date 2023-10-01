@@ -26,12 +26,6 @@ public partial class Main : Node2D
 		if (firstBall.IsMoving()) {
 			instructions.Visible = false;
 		}
-
-		if (Input.IsActionJustPressed("ui_accept")) {
-			TogglePlayerAI(1);
-		} else if (Input.IsActionJustPressed("ui_focus_next")) {
-			TogglePlayerAI(2);
-		} 
 	}
 
 	public void TogglePlayerAI(int player) 
@@ -42,7 +36,7 @@ public partial class Main : Node2D
 			playerAIs[index].PlayerPrefix = $"P{player}";
 			GameInput.RegisterAI(playerAIs[index], $"P{player}");
 			AddChild(playerAIs[index]);
-		} else if (player == 1 && playerAIs[index] != null) {
+		} else if (playerAIs[index] != null) {
 			GameInput.UnregisterAI($"P{player}");
 			playerAIs[index].QueueFree();
 			playerAIs[index] = null;

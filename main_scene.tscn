@@ -1,15 +1,21 @@
-[gd_scene load_steps=15 format=3 uid="uid://g2fmmu80fl1r"]
+[gd_scene load_steps=21 format=3 uid="uid://g2fmmu80fl1r"]
 
 [ext_resource type="PackedScene" uid="uid://ura8qxo2t8qn" path="res://player.tscn" id="1_buhnv"]
-[ext_resource type="Texture2D" uid="uid://darouo2cix4ka" path="res://heart.png" id="1_hdepo"]
 [ext_resource type="Script" path="res://Main.cs" id="1_pmf3k"]
-[ext_resource type="PackedScene" uid="uid://ciqnlswopxiv1" path="res://power_up.tscn" id="2_nlpue"]
+[ext_resource type="PackedScene" uid="uid://bmed5w2diusui" path="res://hud.tscn" id="2_gbt34"]
 [ext_resource type="PackedScene" uid="uid://4kdanr4hlq7s" path="res://regular_ball.tscn" id="2_orh7a"]
 [ext_resource type="PackedScene" uid="uid://cbbj8th1yehax" path="res://stage.tscn" id="3_xxouu"]
 [ext_resource type="Script" path="res://Camera.cs" id="5_wtd17"]
 [ext_resource type="Texture2D" uid="uid://cwqmbwfeta2re" path="res://smashit.png" id="6_btlwj"]
 [ext_resource type="Texture2D" uid="uid://basdmrggkamy8" path="res://misc/dot_with_background.png" id="8_r1xp6"]
+[ext_resource type="Script" path="res://MoveUpAndDown.cs" id="9_hto3w"]
 [ext_resource type="Texture2D" uid="uid://don48hwcge1r1" path="res://misc/r_with_background.png" id="9_l4v0x"]
+[ext_resource type="PackedScene" uid="uid://duftf1jmkq60e" path="res://player_toggle.tscn" id="12_sxut4"]
+[ext_resource type="Script" path="res://WinScreen.cs" id="13_yxc3r"]
+[ext_resource type="AudioStream" uid="uid://bs52kwfgn2pw5" path="res://BackgroundMusic.mp3" id="14_3vvy0"]
+[ext_resource type="PackedScene" uid="uid://dpyx21fgrfrpw" path="res://overall_score.tscn" id="14_gbi3c"]
+[ext_resource type="Script" path="res://MusicPlayer.cs" id="15_7sf01"]
+[ext_resource type="PackedScene" uid="uid://c8tn1egvl67vh" path="res://music_toggle.tscn" id="16_4fvhi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nfkj3"]
 atlas = ExtResource("6_btlwj")
@@ -54,63 +60,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.411765, 0.313726, 0.443137, 1)
 
-[node name="HUD" type="Node2D" parent="."]
+[node name="HUD" parent="." instance=ExtResource("2_gbt34")]
+position = Vector2(150, 50)
+playerPrefix = "P1"
 
-[node name="Sprite2D" type="Sprite2D" parent="HUD"]
-position = Vector2(157, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D2" type="Sprite2D" parent="HUD"]
-position = Vector2(221, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D3" type="Sprite2D" parent="HUD"]
-position = Vector2(292, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D4" type="Sprite2D" parent="HUD"]
-position = Vector2(356, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D5" type="Sprite2D" parent="HUD"]
-position = Vector2(423, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D6" type="Sprite2D" parent="HUD"]
-position = Vector2(720.66, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D7" type="Sprite2D" parent="HUD"]
-position = Vector2(784.66, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D8" type="Sprite2D" parent="HUD"]
-position = Vector2(855.66, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D9" type="Sprite2D" parent="HUD"]
-position = Vector2(919.66, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
-
-[node name="Sprite2D10" type="Sprite2D" parent="HUD"]
-position = Vector2(986.66, 52)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("1_hdepo")
+[node name="HUD2" parent="." instance=ExtResource("2_gbt34")]
+position = Vector2(680, 50)
+playerPrefix = "P2"
 
 [node name="Stage" parent="." instance=ExtResource("3_xxouu")]
 position = Vector2(0, 31)
-
-[node name="Powerup" parent="." instance=ExtResource("2_nlpue")]
-position = Vector2(384, 200)
 
 [node name="P1" parent="." instance=ExtResource("1_buhnv")]
 position = Vector2(292, 296)
@@ -137,9 +96,73 @@ sprite_frames = SubResource("SpriteFrames_7ivts")
 frame_progress = 0.941787
 
 [node name="DotWithBackground" type="Sprite2D" parent="Instructions"]
-position = Vector2(1108, 388)
+position = Vector2(849, 481)
 texture = ExtResource("8_r1xp6")
+script = ExtResource("9_hto3w")
 
 [node name="RWithBackground" type="Sprite2D" parent="Instructions"]
-position = Vector2(69, 406)
+position = Vector2(319, 481)
 texture = ExtResource("9_l4v0x")
+script = ExtResource("9_hto3w")
+
+[node name="Player1Toggle" parent="." instance=ExtResource("12_sxut4")]
+position = Vector2(87, 55)
+scale = Vector2(0.33, 0.33)
+player = 1
+
+[node name="Player2Toggle" parent="." instance=ExtResource("12_sxut4")]
+position = Vector2(1035, 50)
+scale = Vector2(0.33, 0.33)
+player = 2
+
+[node name="WinScreen" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("13_yxc3r")
+
+[node name="ColorRect" type="ColorRect" parent="WinScreen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.411765, 0.313726, 0.443137, 1)
+
+[node name="Text" type="RichTextLabel" parent="WinScreen"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 235.0
+offset_top = -44.0
+offset_right = 235.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 100
+bbcode_enabled = true
+text = "[shake rate=20.0 level=50 connected=1]Player 1 won![/shake]"
+fit_content = true
+text_direction = 1
+
+[node name="OverallScoreP1" parent="." instance=ExtResource("14_gbi3c")]
+position = Vector2(497, 21)
+playerPrefix = "P1"
+
+[node name="OverallScoreP2" parent="." instance=ExtResource("14_gbi3c")]
+position = Vector2(587, 21)
+playerPrefix = "P2"
+
+[node name="MusicPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_3vvy0")
+autoplay = true
+script = ExtResource("15_7sf01")
+
+[node name="MusicToggle" parent="." instance=ExtResource("16_4fvhi")]
+position = Vector2(78, 606)
+scale = Vector2(0.15, 0.15)
+label = "Music"
+
+[node name="SoundToggle" parent="." instance=ExtResource("16_4fvhi")]
+position = Vector2(78, 629)
+scale = Vector2(0.15, 0.15)
+label = "Sound"

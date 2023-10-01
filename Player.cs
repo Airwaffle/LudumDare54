@@ -18,7 +18,7 @@ public partial class Player : Node2D
 	[Export]
 	ulong handAnimMs = 500;
 	[Export]
-	int maxLives = 5;
+	public int maxLives = 5;
 
 	[Export]
 	Texture2D FaceNormal;
@@ -28,6 +28,13 @@ public partial class Player : Node2D
 	Texture2D FaceHurt;
 	[Export]
 	Texture2D FacePower;
+	[Export]
+	Texture2D FaceMiss;
+
+	[Export]
+	Texture2D BodyHuman;
+	[Export]
+	Texture2D BodyAI;
 
 
 	[Export]
@@ -54,6 +61,7 @@ public partial class Player : Node2D
 	Node2D handGraphic;
 
 	Sprite2D body;
+	private Sprite2D aiLamp;
 	AnimatedSprite2D powerupIndicator;
 
 
@@ -63,12 +71,25 @@ public partial class Player : Node2D
 	double gotHurtTime = 0;
 	double trySmashTime = 0;
 	double smashTime = 0;
-	int lives = 0;
+	private GlobalData globalData;
+	public int lives = 0;
+	public int smashes = 0;
 
 	PowerupType currentPowerup;
+	private AudioStreamPlayer2D audioPlayer;
+	private AudioStreamWav gotHitSound;
+	private AudioStreamWav pickupSound;
+	private AudioStreamWav smashSound;
+    private AudioStreamWav bounceSound;
+
+    public bool IsPoweredUp()
+	{
+		return currentPowerup != PowerupType.None;
+	}
 
 	public override void _Ready()
 	{
+		globalData = GetNode<GlobalData>("/root/GlobalData");
 		lives = maxLives;
 		groundPos = Position;
 		lastGroundPos = Position;
@@ -77,6 +98,7 @@ public partial class Player : Node2D
 		moveArea = GetNode<Area2D>($"/root/MainScene/Stage/{playerPrefix}Area");
 		feetArea = GetNode<Area2D>($"FeetArea");
 		body = graphic.GetNode<Sprite2D>($"Body");
+		aiLamp = graphic.GetNode<Sprite2D>($"AILamp");
 		hurtArea = graphic.GetNode<Area2D>($"Body/HurtArea");
 		faceGraphic = graphic.GetNode<Sprite2D>("Face/FaceSprite");
 		handNode = graphic.GetNode<Node2D>("Hands");
@@ -84,6 +106,14 @@ public partial class Player : Node2D
 		handArea = handNode.GetNode<Area2D>("HandArea");
 		powerupIndicator = GetNode<AnimatedSprite2D>("PowerupIndicator");
 		powerupIndicator.Play();
+
+		audioPlayer = new AudioStreamPlayer2D();
+		AddChild(audioPlayer);
+
+		gotHitSound = (AudioStreamWav)ResourceLoader.Load("res://sounds/gotHit.wav");
+		pickupSound = (AudioStreamWav)ResourceLoader.Load("res://sounds/pickup.wav");
+		smashSound = (AudioStreamWav)ResourceLoader.Load("res://sounds/smash.wav");
+		bounceSound = (AudioStreamWav)ResourceLoader.Load("res://sounds/bounce.wav");
 	}
 
 	private void ContinuesMovement()
@@ -98,25 +128,40 @@ public partial class Player : Node2D
 			moveDir.Y += 1;
 	}
 
-
 	public override void _PhysicsProcess(double delta)
 	{
-		var isHurting = hurtArea.GetOverlappingAreas().Any(x => x.Name == "HitArea");
-		if (isHurting)
+		audioPlayer.VolumeDb = globalData.SoundEffectDB;
+
+		var hitByBall = hurtArea.GetOverlappingAreas().Any(x => x.Name == "HitArea") && jumpOffset > -400;
+		var hitByExplosion = hurtArea.GetOverlappingAreas().Any(x => x.Name == "BombArea") && jumpOffset > -130;
+
+		if (hitByBall || hitByExplosion)
+			GetHurt();
+
+		var hitByFire = hurtArea.GetOverlappingAreas().Any(x => x.Name == "FireArea") && jumpOffset > -250;
+		if (hitByFire)
 		{
 			GetHurt();
+			var fire = hurtArea.GetOverlappingAreas().First(x => x.Name == "FireArea").GetParent();
+			fire.QueueFree();
 		}
 
 		var powerupCollision = hurtArea.GetOverlappingAreas().FirstOrDefault(x => x.Name == "PowerupArea");
-		if (powerupCollision != null)
+		if (powerupCollision != null && jumpOffset > -250)
 		{
-			var powerup = powerupCollision.FindParent("Powerup") as Powerup;
-			currentPowerup = powerup.PowerupType;
-			powerup.QueueFree();
+			var powerup = powerupCollision.GetParent() as Powerup;
+			if (powerup != null)
+			{
+				currentPowerup = powerup.PowerupType;
+				powerup.RemoveSelf();
+
+				audioPlayer.Stream = pickupSound;
+				audioPlayer.Play();
+			}
 		}
 
 		UpdateFace();
-		UpdateBodyColor();
+		UpdateBody();
 		UpdateHands();
 		SpecialInput();
 
@@ -178,6 +223,8 @@ public partial class Player : Node2D
 			faceGraphic.Texture = FaceHurt;
 		else if ((Time.GetTicksMsec() - handAnimMs) < smashTime)
 			faceGraphic.Texture = FaceConcentrated;
+		else if ((Time.GetTicksMsec() - handAnimMs) < trySmashTime)
+			faceGraphic.Texture = FaceMiss;
 		else if (currentPowerup != PowerupType.None)
 			faceGraphic.Texture = FacePower;
 		else
@@ -199,8 +246,21 @@ public partial class Player : Node2D
 		}
 	}
 
-	private void UpdateBodyColor()
+	private void UpdateBody()
 	{
+		aiLamp.Visible = !globalData.GetIsHuman(playerPrefix);
+
+		if (globalData.GetIsHuman(playerPrefix))
+		{
+			body.Texture = BodyHuman;
+		}
+		else
+		{
+			body.Texture = BodyAI;
+			var value = (Math.Sin((Time.GetTicksMsec() * 50) / 1000.0f) + 1) * 0.5f;
+			aiLamp.Modulate = Colors.Black.Lerp(Colors.Red, (float)value);
+		}
+
 		powerupIndicator.Visible = currentPowerup != PowerupType.None;
 
 		if (IsInvincible())
@@ -217,10 +277,13 @@ public partial class Player : Node2D
 
 			body.Modulate = Colors.White.Lerp(powerupColor, (float)value);
 			powerupIndicator.Modulate = powerupColor;
+
+			handGraphic.Modulate = powerupColor;
 		}
 		else
 		{
 			body.Modulate = Colors.White;
+			handGraphic.Modulate = Colors.White;
 		}
 	}
 
@@ -228,7 +291,11 @@ public partial class Player : Node2D
 	{
 		if (IsInvincible()) return;
 
+		audioPlayer.Stream = gotHitSound;
+		audioPlayer.Play();
+
 		gotHurtTime = Time.GetTicksMsec();
+		lives--;
 	}
 
 	private bool IsSmashing()
@@ -256,7 +323,7 @@ public partial class Player : Node2D
 		if (isJumping)
 			boastSpeed += 1;
 
-		if (GameInput.IsActionJustPressed(playerPrefix,  "Left"))
+		if (GameInput.IsActionJustPressed(playerPrefix, "Left"))
 		{
 			moveDir.X -= boastSpeed;
 		}
@@ -276,7 +343,7 @@ public partial class Player : Node2D
 			moveDir.Y += boastSpeed;
 		}
 
-		if (GameInput.IsActionJustPressed(playerPrefix,"Hit"))
+		if (GameInput.IsActionJustPressed(playerPrefix, "Hit"))
 			hitPressTime = Time.GetTicksMsec();
 
 		if (GameInput.IsActionJustPressed(playerPrefix, "Jump") && !isJumping)
@@ -287,7 +354,6 @@ public partial class Player : Node2D
 			var timeDown = Time.GetTicksMsec() - hitPressTime;
 			if (GameInput.IsActionJustReleased(playerPrefix, "Hit"))
 			{
-				GD.Print($"hit time down {timeDown}");
 				DoSmash((float)(timeDown / maxHoldMs));
 				hitPressTime = 0;
 			}
@@ -298,11 +364,13 @@ public partial class Player : Node2D
 			var timeDown = Math.Min(Time.GetTicksMsec() - jumpPressTime, maxHoldMs);
 			if (GameInput.IsActionJustReleased(playerPrefix, "Jump"))
 			{
-				GD.Print($"jump time down {timeDown}");
 				isJumping = true;
 				jumpSpeed = 90 * (float)(timeDown / maxHoldMs);
 				moveDir.X *= 2;
 				jumpPressTime = 0;
+
+				audioPlayer.Stream = bounceSound;
+				audioPlayer.Play();
 			}
 		}
 	}
@@ -321,12 +389,16 @@ public partial class Player : Node2D
 		if (ballCollision == null)
 			return;
 
-		var ball = ballCollision.FindParent("RegularBall") as RegularBall;
+		var ball = ballCollision.GetParent().GetParent() as RegularBall;
 		ball.PerformSmash(strength, playerPrefix == "P1" ? "P2" : "P1");
 
-		if (ball.TryApplyPowerup(currentPowerup))
+		if (ball.TryApplyPowerup(currentPowerup, playerPrefix))
 			currentPowerup = PowerupType.None;
 		smashTime = Time.GetTicksMsec();
+		smashes++;
+
+		audioPlayer.Stream = smashSound;
+		audioPlayer.Play();
 	}
 
 	public static float TicksSeconds => Time.GetTicksMsec() * 1000;

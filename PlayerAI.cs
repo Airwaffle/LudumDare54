@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class PlayerAI : Node
 {
@@ -7,7 +8,7 @@ public partial class PlayerAI : Node
 	public string PlayerPrefix;
 
 	private Player player;
-	private RegularBall ball;
+	private BallSpawner ballSpawner;
 
 	private string currentDirection = "Down";
 	private Vector2 wishedDirection = Vector2.Down;
@@ -19,14 +20,12 @@ public partial class PlayerAI : Node
 	public override void _Ready()
 	{
 		player = GetNode<Player>($"/root/MainScene/{PlayerPrefix}");
-		ball = GetNode<RegularBall>($"/root/MainScene/RegularBall");
-
-		//FindChildren()
+		ballSpawner = GetNode<BallSpawner>($"/root/MainScene/Stage/BallSpawner");
 	}
 
 	public override void _Process(double delta)
 	{
-		var dirToBall = player.GlobalPosition - ball.GlobalPosition;
+		var dirToBall = player.GlobalPosition - ballSpawner.balls.First().GlobalPosition;
 
 		if (dirToBall.Length() > 300) {
 		wishedDirection = (dirToBall * -1).Normalized();

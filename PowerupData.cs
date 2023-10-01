@@ -4,8 +4,8 @@ public enum PowerupType
 {
     None,
     Bomb,
-    Multiplier,
     Homing,
+    Fire,
 }
 
 public static class PowerupData
@@ -13,11 +13,11 @@ public static class PowerupData
     public static Color GetColor(PowerupType type) {
         switch (type) {
             case PowerupType.Bomb:
-                return Colors.AliceBlue;
+                return Colors.RoyalBlue;
             case PowerupType.Homing:
                 return Colors.GreenYellow;
-            case PowerupType.Multiplier:
-                return Colors.Purple;
+            case PowerupType.Fire:
+                return Colors.Orange;
         }
         return Colors.White;
         
