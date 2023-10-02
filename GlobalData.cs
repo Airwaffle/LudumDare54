@@ -8,8 +8,8 @@ public partial class GlobalData : Node
 	public int SoundEffectDB = 0;
 	public int MusicDB = 0;
     
-    public bool Player1IsHuman = true;
-    public bool Player2IsHuman = true;
+    private bool Player1IsHuman = true;
+    private bool Player2IsHuman = true;
 
     internal int GetScore(string playerPrefix)
     {

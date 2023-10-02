@@ -6,6 +6,7 @@ using System.Linq;
 public partial class PowerupSpawner : Node2D
 {
 	const int smashesRequired = 4;
+	const int smashesRequiredForAI = 7;
 
 	[Export]
 	private string playerPrefix;
@@ -16,11 +17,16 @@ public partial class PowerupSpawner : Node2D
 	private Player player;
 	private PackedScene powerupScene;
 	private List<Powerup> existingPowerups = new List<Powerup>();
-	private RandomNumberGenerator random;
+    private GlobalData globalData;
+    private RandomNumberGenerator random;
 	private PowerupType lastSpawned = PowerupType.None;
+
+
+	public List<Powerup> Powerups => existingPowerups.ToList();
 
 	public override void _Ready()
 	{
+		globalData = GetNode<GlobalData>("/root/GlobalData");
 		random = new RandomNumberGenerator();
 		player = GetNode<Player>($"/root/MainScene/{playerPrefix}");
 		powerupScene = (PackedScene)ResourceLoader.Load("res://power_up.tscn");
@@ -28,8 +34,10 @@ public partial class PowerupSpawner : Node2D
 
 	public override void _Process(double delta)
 	{
-		if (Math.Floor(lastTimeSmashes / (float)smashesRequired) !=
-		Math.Floor(player.smashes / (float)smashesRequired))
+		var required = globalData.GetIsHuman(playerPrefix) ? smashesRequired : smashesRequiredForAI;
+
+		if (Math.Floor(lastTimeSmashes / (float)required) !=
+		Math.Floor(player.smashes / (float)required))
 		{
 			SpawnPowerup();
 			lastTimeSmashes = player.smashes;

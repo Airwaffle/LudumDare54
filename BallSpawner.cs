@@ -60,6 +60,11 @@ public partial class BallSpawner : Node2D
 		balls.Remove(ball);
 	}
 
+	public bool IsAwaitingStartBall() 
+	{
+		return startBall?.IsMoving() == false;
+	}
+
 	private void DoStartBallWait()
 	{
 		if (startBall?.IsMoving() == true)

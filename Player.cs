@@ -82,6 +82,8 @@ public partial class Player : Node2D
 	private AudioStreamWav smashSound;
     private AudioStreamWav bounceSound;
 
+	public bool IsJumping => isJumping;
+
     public bool IsPoweredUp()
 	{
 		return currentPowerup != PowerupType.None;

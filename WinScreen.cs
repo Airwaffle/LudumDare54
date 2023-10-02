@@ -3,29 +3,30 @@ using System;
 
 public partial class WinScreen : CanvasLayer
 {
-	[Export]
-	private ulong countdownTimeMs = 2000;
-
-	private Player player1;
-	private Player player2;
-	private RichTextLabel text;
+    [Export]
+    private ulong countdownTimeMs = 2000;
+    private Main main;
+    private Player player1;
+    private Player player2;
+    private RichTextLabel text;
     private GlobalData globalVariables;
     private ulong countdownTime;
 
-	// Called when the node enters the scene tree for the first time.
+    // Called when the node enters the scene tree for the first time.
 
-	public override void _Ready()
-	{
-		Visible = false;
-		player1 = GetNode<Player>($"/root/MainScene/P1");
-		player2 = GetNode<Player>($"/root/MainScene/P2");
-		text = GetNode<RichTextLabel>($"Text");
-		globalVariables = GetNode<GlobalData>("/root/GlobalData");
+    public override void _Ready()
+    {
+        Visible = false;
+        main = GetNode<Main>($"/root/MainScene");
+        player1 = main.GetNode<Player>($"P1");
+        player2 = main.GetNode<Player>($"P2");
+        text = GetNode<RichTextLabel>($"Text");
+        globalVariables = GetNode<GlobalData>("/root/GlobalData");
 
-	}
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
     {
         if (!GameIsOver())
             return;
@@ -37,10 +38,10 @@ public partial class WinScreen : CanvasLayer
             text.Text = winText;
             countdownTime = Time.GetTicksMsec();
 
-			if (player2.lives <= 0) 
-				globalVariables.Player1Wins++;
-			else 
-				globalVariables.Player2Wins++;
+            if (player2.lives <= 0)
+                globalVariables.Player1Wins++;
+            else
+                globalVariables.Player2Wins++;
 
         }
         Visible = true;
@@ -48,7 +49,7 @@ public partial class WinScreen : CanvasLayer
 
         if (countdownTime + countdownTimeMs <= Time.GetTicksMsec())
         {
-            GetTree().ReloadCurrentScene();
+            main.ReloadScene();
         }
     }
 
@@ -60,10 +61,10 @@ public partial class WinScreen : CanvasLayer
 
     public override void _Input(InputEvent @event)
     {
-		//if (!GameIsOver())
+        //if (!GameIsOver())
         //    return;
 
-		//if (@event.ac)
+        //if (@event.ac)
 
         //GetTree().ReloadCurrentScene();
     }

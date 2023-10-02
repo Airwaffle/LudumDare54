@@ -168,27 +168,27 @@ offset_right = 106.667
 offset_bottom = 465.83
 text = "Smash:"
 
-[node name="PowerupSpawner" type="Node2D" parent="." node_paths=PackedStringArray("spawnPoints")]
+[node name="PowerupSpawnerP1" type="Node2D" parent="." node_paths=PackedStringArray("spawnPoints")]
 script = ExtResource("10_qq081")
 playerPrefix = "P1"
 spawnPoints = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
 
-[node name="SpawnPoint1" type="Node2D" parent="PowerupSpawner"]
+[node name="SpawnPoint1" type="Node2D" parent="PowerupSpawnerP1"]
 position = Vector2(292, 167)
 
-[node name="SpawnPoint2" type="Node2D" parent="PowerupSpawner"]
+[node name="SpawnPoint2" type="Node2D" parent="PowerupSpawnerP1"]
 position = Vector2(287, 469)
 
-[node name="PowerupSpawner2" type="Node2D" parent="." node_paths=PackedStringArray("spawnPoints")]
+[node name="PowerupSpawnerP2" type="Node2D" parent="." node_paths=PackedStringArray("spawnPoints")]
 position = Vector2(554, 0)
 script = ExtResource("10_qq081")
 playerPrefix = "P2"
 spawnPoints = [NodePath("SpawnPoint1"), NodePath("SpawnPoint2")]
 
-[node name="SpawnPoint1" type="Node2D" parent="PowerupSpawner2"]
+[node name="SpawnPoint1" type="Node2D" parent="PowerupSpawnerP2"]
 position = Vector2(292, 167)
 
-[node name="SpawnPoint2" type="Node2D" parent="PowerupSpawner2"]
+[node name="SpawnPoint2" type="Node2D" parent="PowerupSpawnerP2"]
 position = Vector2(287, 469)
 
 [node name="BallSpawner" parent="." node_paths=PackedStringArray("spawnPoints") instance=ExtResource("11_os1xl")]

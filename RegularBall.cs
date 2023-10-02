@@ -228,11 +228,25 @@ public partial class RegularBall : Node2D
 		}
 	}
 
+	private string otherPlayer(string player) {
+		if (player == "P1") return "P2";
+		else return "P1";
+	}
+
 	public void PerformSmash(float strength, string aimedPlayer)
 	{
 		var player = GetNode<Node2D>($"/root/MainScene/{aimedPlayer}");
-		var newDir = player.GlobalPosition - GlobalPosition;
-		moveDir = newDir.Normalized() * 2 * strength;
+		
+		var newDir = (player.GlobalPosition - GlobalPosition).Normalized();
+
+		// applies random rotation offset if sender is AI.
+		if (!globalData.GetIsHuman(otherPlayer(aimedPlayer))) {
+			var degrees = random.RandiRange(-5, 5);
+			var radians = degrees * Math.PI  / 180f;
+			newDir = newDir.Rotated((float)radians);
+		}
+
+		moveDir = newDir * 2 * strength;
 	}
 
 	public override void _PhysicsProcess(double delta)
